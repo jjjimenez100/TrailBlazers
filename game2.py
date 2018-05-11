@@ -16,13 +16,15 @@ class Player(pygame.sprite.Sprite):
         elif player==2:
             self.image = Player.p2
         self.rect = self.image.get_rect()
+        self.dir = ''
         if player==1:
             self.rect.center = 40,40
+            self.dir= 'down'
         elif player==2:
             self.rect.center = 760, 560
+            self.dir = 'up'
         self.dx = 0
         self.dy = 0
-        self.dir = 'down'
         self.trails = []
 
     def update(self):
@@ -145,6 +147,11 @@ def init():
                 sprites.empty()
                 sprites.add(gameover)
                 gameover.text = 'p2 wins walao sad boi'
+
+        if p1.rect.colliderect(p2.rect):
+            sprites.empty()
+            sprites.add(gameover)
+            gameover.text = 'u hit each other gj is tie'
 
         sprites.clear(screen, display)
         sprites.update()
