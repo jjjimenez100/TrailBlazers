@@ -1,0 +1,5 @@
+#ignore everything except class files and images
+venv/
+.idea/
+__pycache__/
+Classes/__pycache__/
