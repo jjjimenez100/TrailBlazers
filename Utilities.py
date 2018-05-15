@@ -6,7 +6,7 @@ def loadImage(filePath : str) -> pygame.Surface:
     except pygame.error:
         raise SystemExit("Error loading image %s : %s" %(filePath, pygame.get_error()))
 
-    return image.convert()
+    return image
 
 def loadImages(*filePaths : [str]) -> [pygame.Surface]:
     images = []
