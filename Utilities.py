@@ -1,5 +1,9 @@
 import pygame
 
+
+sprites = pygame.sprite.Group()
+trails = pygame.sprite.Group()
+
 def loadImage(filePath : str) -> pygame.Surface:
     try:
         image = pygame.image.load(filePath)
