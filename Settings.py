@@ -1,3 +1,4 @@
+
 class Settings:
     SCREEN = (800, 500)
     SCREEN_WIDTH = SCREEN[0]
@@ -20,4 +21,3 @@ class Settings:
     PLAYER_ONE_SPRITE = ""
     PLAYER_TWO_SPRITE = ""
     TRAIL_SPRITE = ""
-
