@@ -1,5 +1,5 @@
 from Settings import *
-from Utilities import *
+from Classes.Utilities import *
 from Classes.Trail import Trail
 
 
@@ -46,7 +46,7 @@ class Player(pygame.sprite.Sprite):
         if difficulty==0:
             self.speed = 3
         else:
-            self.speed = 5
+            self.speed = 9
         Player.left = (-self.speed, 0)
         Player.right = (self.speed, 0)
         Player.up = (0, -self.speed)

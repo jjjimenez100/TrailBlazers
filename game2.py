@@ -1,16 +1,16 @@
 from Settings import Settings
-from Utilities import *
+from Classes.Utilities import *
 from Classes.Label import Label
 from Classes.Scoreboard import Scoreboard
 from Classes.Player import Player
-from MainScreen import MainScreen
-from InstructionScreen import InstructionScreen
-
+from Classes.MainScreen import MainScreen
+from Classes.InstructionScreen import InstructionScreen
+import pygame
 
 def Gameover(winner: str, text: str):
     sprites.empty()
     sprites.add(text)
-    text.text = winner + ' wins walao sad boi'
+    text.text = winner + ' wins!'
 
 
 def restart(player1, player2):
@@ -39,23 +39,19 @@ def initMainScreen():
     playOrStopMusic()
     return createGameScreen(MainScreen().initLabels())
 
-
 def initInstructionsScreen():
     return createGameScreen(InstructionScreen().initLabels())
 
-
 def playOrStopMusic(playBack: bool = True):
     if (playBack):
+        #GAME = pygame.mixer.Sound(Settings.SOUNDS_DIRECTORY+"bg.ogg").play(-1)
         pass
-        # GAME = pygame.mixer.Sound("bg.ogg").play(-1)
-
 
 def init():
     pygame.init()
     screen = pygame.display.set_mode((Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT))
-    pygame.display.set_caption('game')
-
-    display = pygame.image.load('images/bg.png')
+    pygame.display.set_caption(Settings.GAME_TITLE)
+    display = pygame.image.load(Settings.IMAGES_DIRECTORY + "spaceBackground.png")
     display = pygame.transform.scale(display, (Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT))
     screen.blit(display, (0, 0))
     gameover = Label(32)
@@ -66,12 +62,12 @@ def init():
 
     clock = pygame.time.Clock()
 
-    startingTimer = 3
+    startingTimer = 4
     counter = startingTimer
 
     pygame.time.set_timer(pygame.USEREVENT, 1000)
     countdown = Label(64)
-    countdown.text = str(counter)
+    countdown.text = str(counter-1)
     sprites.add(countdown)
     countdownFinished = False
 
@@ -87,11 +83,12 @@ def init():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 done = True
+
             if not gameScreen:
-                playOrStopMusic(False)
                 if event.type == pygame.USEREVENT and not countdownFinished:
                     counter -= 1
                     if counter > 0:
+                        pygame.mixer.Sound("resources/sounds/select.ogx").play()
                         countdown.text = str(counter)
                     else:
                         countdownFinished = True
@@ -134,10 +131,10 @@ def init():
                         gameScreen = False
                         gameScreenSprites.clear(screen, display)
 
-
             else:
                 # Game Screen keys
                 if event.type == pygame.KEYDOWN:
+                    pygame.mixer.Sound("resources/sounds/select.ogx").play()
                     if event.key == pygame.K_F1 or event.key == pygame.K_F2 or event.key == pygame.K_F3:
                         if event.key == pygame.K_F1:
                             Settings.GAME_DIFFICULTY = 0
@@ -207,10 +204,11 @@ def init():
                         counter = startingTimer
                         p1creating, p2creating = False, False
                     break
-            if sb.p1score >= 5:
-                Gameover('player 1', gameover)
-            if sb.p2score >= 5:
-                Gameover('player 2', gameover)
+
+            if sb.p1score >= Settings.GAMEPLAY_MAX_SCORE:
+                Gameover('Player 1', gameover)
+            if sb.p2score >= Settings.GAMEPLAY_MAX_SCORE:
+                Gameover('Player 2', gameover)
 
             if p2.checkOutOfBounds():
                 if not p2.exploded:

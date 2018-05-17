@@ -1,5 +1,5 @@
 import Classes.Label as l
-from Utilities import *
+from Classes.Utilities import *
 from Settings import *
 
 class Scoreboard():

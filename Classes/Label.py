@@ -1,5 +1,5 @@
 from Settings import *
-from Utilities import *
+from Classes.Utilities import *
 
 class Label(pygame.sprite.Sprite):
     def __init__(self, size: int):
