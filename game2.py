@@ -147,7 +147,6 @@ def init():
                         gameScreenSprites.clear(screen, display)
                         gameScreenSprites = initInstructionsScreen()
                         instructions = True
-      
         if not gameScreen:
             if p1creating:
                 p1.createTrail()
