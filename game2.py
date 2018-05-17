@@ -47,6 +47,9 @@ def playOrStopMusic(playBack: bool = True):
         #GAME = pygame.mixer.Sound(Settings.SOUNDS_DIRECTORY+"bg.ogg").play(-1)
         pass
 
+def checkIfDead(p1 : Player, p2 : Player):
+    return not p1.exploded or not p2.exploded
+
 def init():
     pygame.init()
     screen = pygame.display.set_mode((Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT))
@@ -153,9 +156,9 @@ def init():
                         instructions = True
 
         if not gameScreen:
-            if p1creating:
+            if p1creating or not checkIfDead(p1, p2):
                 p1.createTrail()
-            if p2creating:
+            if p2creating or not checkIfDead(p1, p2):
                 p2.createTrail()
 
             for i in range(0, len(p1.trails)):
@@ -235,7 +238,7 @@ def init():
                     p1.explode()
                 if not p2.exploded:
                     p2.explode()
-                if not p2.exploding:
+                if not p2.exploding and not p1.exploding:
                     restart(p1, p2)
                     counter = startingTimer
                     countdownFinished = False

@@ -5,10 +5,11 @@ from Classes.Trail import Trail
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, player: int):
+        self.player = player
         pygame.sprite.Sprite.__init__(self)
         sprites.add(self, layer=3)
-        p1 = loadImage('images/player1.png')
-        p2 = loadImage('images/player2.png')
+        self.p1 = loadImage('images/player1.png')
+        self.p2 = loadImage('images/player2.png')
         self.explosions = loadImages('images/explosions/explosion0.png', 'images/explosions/explosion1.png',
                                      'images/explosions/explosion2.png',
                                      'images/explosions/explosion3.png', 'images/explosions/explosion4.png',
@@ -18,13 +19,13 @@ class Player(pygame.sprite.Sprite):
                                      'images/explosions/explosion9.png', 'images/explosions/explosion10.png', )
         self.dir = ''
         if player == 1:
-            self.image = p1
+            self.image = self.p1
             self.rect = self.image.get_rect()
             self.rect.center = 40, 40
             self.dir = 'down'
             self.image = pygame.transform.rotate(self.image, 180)
         elif player == 2:
-            self.image = p2
+            self.image = self.p2
             self.rect = self.image.get_rect()
             self.rect.center = Settings.SCREEN_WIDTH - 40, Settings.SCREEN_HEIGHT - 40
             self.dir = 'up'
@@ -61,6 +62,10 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center = self.rect.center)
         self.explodingc += 1
         if self.explodingc > 10:
+            if self.player == 1:
+                self.image = self.p1
+            elif self.player == 2:
+                self.image = self.p2
             self.exploding = False
             self.explodingc = 0
         self.last = pygame.time.get_ticks()
@@ -69,17 +74,14 @@ class Player(pygame.sprite.Sprite):
         self.dx, self.dy = 0,0
 
     def restart(self, player: int):
-        p1 = loadImage('images/player1.png')
-        p2 = loadImage('images/player2.png')
-
         if player == 1:
-            self.image = p1
+            self.image = self.p1
             self.rect = self.image.get_rect()
             self.rect.center = 40, 40
             self.dir = 'down'
             self.image = pygame.transform.rotate(self.image, 180)
         elif player == 2:
-            self.image = p2
+            self.image = self.p2
             self.rect = self.image.get_rect()
             self.rect.center = Settings.SCREEN_WIDTH - 40, Settings.SCREEN_HEIGHT - 40
             self.dir = 'up'
