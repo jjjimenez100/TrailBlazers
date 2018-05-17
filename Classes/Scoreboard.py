@@ -9,19 +9,19 @@ class Scoreboard():
         self.title = l.Label(32)
         self.title.text = 'Scoreboard'
         self.title.center = SCREEN_WIDTH/2, 16
-        sprites.add(self.title)
+        sprites.add(self.title, layer = 2)
         self.playerTitle = l.Label(24)
         self.playerTitle.text = 'Player 1 | Player 2'
         self.playerTitle.center = SCREEN_WIDTH/2, 44
-        sprites.add(self.playerTitle)
+        sprites.add(self.playerTitle, layer = 2)
         self.p1scorelbl = l.Label(24)
         self.p1scorelbl.text = str(self.p1score)
         self.p1scorelbl.center = SCREEN_WIDTH/2 - 50, 72
-        sprites.add(self.p1scorelbl)
+        sprites.add(self.p1scorelbl, layer = 2)
         self.p2scorelbl = l.Label(24)
         self.p2scorelbl.text = str(self.p2score)
         self.p2scorelbl.center = SCREEN_WIDTH/2 + 50, 72
-        sprites.add(self.p2scorelbl)
+        sprites.add(self.p2scorelbl, layer = 2)
 
     def addScore(self, player):
         if player=='p1':
