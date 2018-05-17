@@ -1,4 +1,4 @@
-from Settings import *
+from Settings import Settings
 from Utilities import *
 from Classes.Trail import Trail
 
@@ -19,10 +19,10 @@ class Player(pygame.sprite.Sprite):
         elif player == 2:
             self.image = p2
             self.rect = self.image.get_rect()
-            self.rect.center = SCREEN_WIDTH - 40, SCREEN_HEIGHT - 40
+            self.rect.center = Settings.SCREEN_WIDTH - 40, Settings.SCREEN_HEIGHT - 40
             self.dir = 'up'
 
-        if GAME_DIFFICULTY == 0:
+        if Settings.GAME_DIFFICULTY == 0:
             self.speed = 5
         else:
             self.speed = 7
@@ -58,9 +58,9 @@ class Player(pygame.sprite.Sprite):
     def update(self):
         self.rect.centerx += self.dx
         self.rect.centery += self.dy
-        if GAME_DIFFICULTY != 2:
-            self.rect.centerx %= SCREEN_WIDTH
-            self.rect.centery %= SCREEN_HEIGHT
+        if Settings.GAME_DIFFICULTY != 2:
+            self.rect.centerx %= Settings.SCREEN_WIDTH
+            self.rect.centery %= Settings.SCREEN_HEIGHT
 
     def rotate(self, degrees: int):
         self.image = pygame.transform.rotate(self.image, degrees)
@@ -103,6 +103,6 @@ class Player(pygame.sprite.Sprite):
             self.dir = 'down'
 
     def checkOutOfBounds(self) -> bool:
-        if GAME_DIFFICULTY == 2:
+        if Settings.GAME_DIFFICULTY == 2:
             return self.rect.top < 0 or self.rect.left < 0 or self.rect.right > 800 or self.rect.bottom > 600
         return False
