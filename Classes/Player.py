@@ -1,4 +1,4 @@
-from Settings import Settings
+from Settings import *
 from Utilities import *
 from Classes.Trail import Trail
 
@@ -29,10 +29,7 @@ class Player(pygame.sprite.Sprite):
             self.rect.center = Settings.SCREEN_WIDTH - 40, Settings.SCREEN_HEIGHT - 40
             self.dir = 'up'
 
-        if Settings.GAME_DIFFICULTY == 0:
-            self.speed = 5
-        else:
-            self.speed = 7
+        self.speed = 5
         Player.left = (-self.speed, 0)
         Player.right = (self.speed, 0)
         Player.up = (0, -self.speed)
@@ -44,6 +41,16 @@ class Player(pygame.sprite.Sprite):
         self.last = 0
         self.exploding = False
         self.explodingc = 0
+
+    def changeDifficulty(self, difficulty=0):
+        if difficulty==0:
+            self.speed = 5
+        else:
+            self.speed = 7
+        Player.left = (-self.speed, 0)
+        Player.right = (self.speed, 0)
+        Player.up = (0, -self.speed)
+        Player.down = (0, self.speed)
 
     def explode(self):
         self.exploding = True
@@ -74,7 +81,7 @@ class Player(pygame.sprite.Sprite):
         elif player == 2:
             self.image = p2
             self.rect = self.image.get_rect()
-            self.rect.center = SCREEN_WIDTH - 40, SCREEN_HEIGHT - 40
+            self.rect.center = Settings.SCREEN_WIDTH - 40, Settings.SCREEN_HEIGHT - 40
             self.dir = 'up'
         self.exploded = False
         self.trails.clear()
@@ -86,9 +93,9 @@ class Player(pygame.sprite.Sprite):
         if not self.exploding:
             self.rect.centerx += self.dx
             self.rect.centery += self.dy
-            if GAME_DIFFICULTY != 2:
-                self.rect.centerx %= SCREEN_WIDTH
-                self.rect.centery %= SCREEN_HEIGHT
+            if Settings.GAME_DIFFICULTY != 2:
+                self.rect.centerx %= Settings.SCREEN_WIDTH
+                self.rect.centery %= Settings.SCREEN_HEIGHT
         elif self.exploding and now - self.last >= 50:
             self.changeexplosion()
 

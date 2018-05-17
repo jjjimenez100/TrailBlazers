@@ -39,7 +39,9 @@ def initInstructionsScreen():
 
 def playOrStopMusic(playBack:bool = True):
     if(playBack):
-        GAME = pygame.mixer.Sound("bg.ogg").play(-1)
+        pass
+        #GAME = pygame.mixer.Sound("bg.ogg").play(-1)
+
 
 def init():
     pygame.init()
@@ -49,14 +51,17 @@ def init():
     display = pygame.image.load('images/bg.png')
     display = pygame.transform.scale(display, (Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT))
     screen.blit(display, (0, 0))
-    p1 = Player(1)
-    p2 = Player(2)
     gameover = Label(32)
     sb = Scoreboard()
 
+    p1 = Player(1)
+    p2 = Player(2)
+
     clock = pygame.time.Clock()
 
-    counter = 1
+    startingTimer = 3
+    counter = startingTimer
+
     pygame.time.set_timer(pygame.USEREVENT, 1000)
     countdown = Label(64)
     countdown.text = str(counter)
@@ -122,21 +127,28 @@ def init():
                         gameScreen = False
                         gameScreenSprites.clear(screen, display)
 
+
             else:
                 # Game Screen keys
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_F1 or event.key == pygame.K_F2 or event.key == pygame.K_F3:
                         if event.key == pygame.K_F1:
                             Settings.GAME_DIFFICULTY = 0
+                            p1.changeDifficulty(0)
+                            p2.changeDifficulty(0)
                         elif event.key == pygame.K_F2:
                             Settings.GAME_DIFFICULTY = 1
+                            p1.changeDifficulty(1)
+                            p2.changeDifficulty(1)
                         elif event.key == pygame.K_F3:
                             Settings.GAME_DIFFICULTY = 2
+                            p1.changeDifficulty(2)
+                            p2.changeDifficulty(2)
                         gameScreenSprites.clear(screen, display)
                         gameScreenSprites = initInstructionsScreen()
                         instructions = True
       
-        if not gamescreen: 
+        if not gameScreen:
             if p1creating:
                 p1.createTrail()
             if p2creating:
@@ -151,7 +163,7 @@ def init():
                         countdownFinished = False
                         restart(p1,p2)
                         sb.addScore('p1')
-                        counter = 5
+                        counter = startingTimer
                         p1creating, p2creating = False, False
                     break
                 if i - (len(p1.trails) - 5) < 0 and p1.rect.colliderect(p1.trails[i]) and countdownFinished:
@@ -162,7 +174,7 @@ def init():
                         countdownFinished = False
                         restart(p1,p2)
                         sb.addScore('p2')
-                        counter = 5
+                        counter = startingTimer
                         p1creating, p2creating = False, False
                     break
             for i in range(0, len(p2.trails)):
@@ -174,7 +186,7 @@ def init():
                         countdownFinished = False
                         restart(p1,p2)
                         sb.addScore('p2')
-                        counter = 5
+                        counter = startingTimer
                         p1creating, p2creating = False, False
                     break
                 if i - (len(p2.trails) - 5) < 0 and p2.rect.colliderect(p2.trails[i]) and countdownFinished:
@@ -185,7 +197,7 @@ def init():
                         countdownFinished = False
                         restart(p1,p2)
                         sb.addScore('p1')
-                        counter = 5
+                        counter = startingTimer
                         p1creating, p2creating = False, False
                     break
             if sb.p1score >= 5:
@@ -200,7 +212,7 @@ def init():
                     p2.explode()
                 if not p2.exploding:
                     restart(p1,p2)
-                    counter = 5
+                    counter = startingTimer
                     countdownFinished = False
                     p1creating, p2creating = False, False
 

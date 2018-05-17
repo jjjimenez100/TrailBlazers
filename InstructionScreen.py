@@ -1,6 +1,6 @@
 import Colors
 from Label import Label
-import Settings
+from Settings import *
 class InstructionScreen:
     def __init__(self):
         self.gameInstructions = "Game Instructions"

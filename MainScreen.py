@@ -1,7 +1,7 @@
 import Colors
 import pygame
 from Label import Label
-import Settings
+from Settings import *
 
 class MainScreen:
     def __init__(self):
@@ -12,7 +12,7 @@ class MainScreen:
         self.about = "Game    Developers:      jjjimenez100     &&     jh-diaz"
         self.images = "Image and Music   Resources:  opengameart.org"
         self.fonts = "Font   Family     Resources:     font1001.com"
-        self.music = pygame.mixer.Sound("bg.ogg").play(-1)
+        #self.music = pygame.mixer.Sound("bg.ogg").play(-1)
         self.mainColor = Colors.YELLOW1
         self.secondaryColor = Colors.WHITE
         self.aboutFontSize = Settings.SCREEN_WIDTH // 50
