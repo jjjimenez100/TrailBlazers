@@ -1,7 +1,7 @@
 import pygame
 
 
-sprites = pygame.sprite.Group()
+sprites = pygame.sprite.LayeredUpdates()
 trails = pygame.sprite.Group()
 
 def loadImage(filePath : str) -> pygame.Surface:

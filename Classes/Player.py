@@ -2,13 +2,20 @@ from Settings import *
 from Utilities import *
 from Classes.Trail import Trail
 
+
 class Player(pygame.sprite.Sprite):
     def __init__(self, player: int):
         pygame.sprite.Sprite.__init__(self)
-        sprites.add(self)
+        sprites.add(self, layer=3)
         p1 = loadImage('images/player1.png')
         p2 = loadImage('images/player2.png')
-
+        self.explosions = loadImages('images/explosions/explosion0.png', 'images/explosions/explosion1.png',
+                                     'images/explosions/explosion2.png',
+                                     'images/explosions/explosion3.png', 'images/explosions/explosion4.png',
+                                     'images/explosions/explosion5.png',
+                                     'images/explosions/explosion6.png', 'images/explosions/explosion7.png',
+                                     'images/explosions/explosion8.png',
+                                     'images/explosions/explosion9.png', 'images/explosions/explosion10.png', )
         self.dir = ''
         if player == 1:
             self.image = p1
@@ -19,10 +26,24 @@ class Player(pygame.sprite.Sprite):
         elif player == 2:
             self.image = p2
             self.rect = self.image.get_rect()
-            self.rect.center = SCREEN_WIDTH - 40, SCREEN_HEIGHT - 40
+            self.rect.center = Settings.SCREEN_WIDTH - 40, Settings.SCREEN_HEIGHT - 40
             self.dir = 'up'
 
-        if GAME_DIFFICULTY == 0:
+        self.speed = 5
+        Player.left = (-self.speed, 0)
+        Player.right = (self.speed, 0)
+        Player.up = (0, -self.speed)
+        Player.down = (0, self.speed)
+        self.exploded = False
+
+        self.dx, self.dy = 0, 0
+        self.trails = []
+        self.last = 0
+        self.exploding = False
+        self.explodingc = 0
+
+    def changeDifficulty(self, difficulty=0):
+        if difficulty==0:
             self.speed = 5
         else:
             self.speed = 7
@@ -31,9 +52,21 @@ class Player(pygame.sprite.Sprite):
         Player.up = (0, -self.speed)
         Player.down = (0, self.speed)
 
+    def explode(self):
+        self.exploding = True
+        self.exploded = True
+
+    def changeexplosion(self):
+        self.image = self.explosions[self.explodingc]
+        self.rect = self.image.get_rect(center = self.rect.center)
+        self.explodingc += 1
+        if self.explodingc > 10:
+            self.exploding = False
+            self.explodingc = 0
+        self.last = pygame.time.get_ticks()
+
+    def stop(self):
         self.dx, self.dy = 0,0
-        self.trails = []
-        self.last = 0
 
     def restart(self, player: int):
         p1 = loadImage('images/player1.png')
@@ -48,19 +81,23 @@ class Player(pygame.sprite.Sprite):
         elif player == 2:
             self.image = p2
             self.rect = self.image.get_rect()
-            self.rect.center = SCREEN_WIDTH - 40, SCREEN_HEIGHT - 40
+            self.rect.center = Settings.SCREEN_WIDTH - 40, Settings.SCREEN_HEIGHT - 40
             self.dir = 'up'
-
+        self.exploded = False
         self.trails.clear()
-        self.dx, self.dy = 0,0
+        self.dx, self.dy = 0, 0
         self.last = 0
 
     def update(self):
-        self.rect.centerx += self.dx
-        self.rect.centery += self.dy
-        if GAME_DIFFICULTY != 2:
-            self.rect.centerx %= SCREEN_WIDTH
-            self.rect.centery %= SCREEN_HEIGHT
+        now = pygame.time.get_ticks()
+        if not self.exploding:
+            self.rect.centerx += self.dx
+            self.rect.centery += self.dy
+            if Settings.GAME_DIFFICULTY != 2:
+                self.rect.centerx %= Settings.SCREEN_WIDTH
+                self.rect.centery %= Settings.SCREEN_HEIGHT
+        elif self.exploding and now - self.last >= 50:
+            self.changeexplosion()
 
     def rotate(self, degrees: int):
         self.image = pygame.transform.rotate(self.image, degrees)
@@ -103,6 +140,6 @@ class Player(pygame.sprite.Sprite):
             self.dir = 'down'
 
     def checkOutOfBounds(self) -> bool:
-        if GAME_DIFFICULTY == 2:
+        if Settings.GAME_DIFFICULTY == 2:
             return self.rect.top < 0 or self.rect.left < 0 or self.rect.right > 800 or self.rect.bottom > 600
         return False
