@@ -6,10 +6,12 @@ from Classes.Player import Player
 from MainScreen import MainScreen
 from InstructionScreen import InstructionScreen
 
+
 def Gameover(winner: str, text: str):
     sprites.empty()
     sprites.add(text)
     text.text = winner + ' wins walao sad boi'
+
 
 def restart(player1, player2):
     player1.restart(1)
@@ -17,11 +19,13 @@ def restart(player1, player2):
     sprites.remove(trails)
     trails.empty()
 
+
 def redrawScreen(screen, display, sprites):
     sprites.clear(screen, display)
     sprites.update()
     sprites.draw(screen)
     pygame.display.flip()
+
 
 def createGameScreen(labels):
     spriteGroup = pygame.sprite.Group()
@@ -30,17 +34,20 @@ def createGameScreen(labels):
 
     return spriteGroup
 
+
 def initMainScreen():
     playOrStopMusic()
     return createGameScreen(MainScreen().initLabels())
 
+
 def initInstructionsScreen():
     return createGameScreen(InstructionScreen().initLabels())
 
-def playOrStopMusic(playBack:bool = True):
-    if(playBack):
+
+def playOrStopMusic(playBack: bool = True):
+    if (playBack):
         pass
-        #GAME = pygame.mixer.Sound("bg.ogg").play(-1)
+        # GAME = pygame.mixer.Sound("bg.ogg").play(-1)
 
 
 def init():
@@ -147,6 +154,7 @@ def init():
                         gameScreenSprites.clear(screen, display)
                         gameScreenSprites = initInstructionsScreen()
                         instructions = True
+
         if not gameScreen:
             if p1creating:
                 p1.createTrail()
@@ -154,13 +162,13 @@ def init():
                 p2.createTrail()
 
             for i in range(0, len(p1.trails)):
-                if p2.checkOutOfBounds() or p2.rect.colliderect(p1.trails[i]) and countdownFinished:
+                if p2.rect.colliderect(p1.trails[i]) and countdownFinished:
                     if not p2.exploded:
                         p2.explode()
                     p1.stop()
                     if not p2.exploding:
                         countdownFinished = False
-                        restart(p1,p2)
+                        restart(p1, p2)
                         sb.addScore('p1')
                         counter = startingTimer
                         p1creating, p2creating = False, False
@@ -171,7 +179,7 @@ def init():
                     p2.stop()
                     if not p1.exploding:
                         countdownFinished = False
-                        restart(p1,p2)
+                        restart(p1, p2)
                         sb.addScore('p2')
                         counter = startingTimer
                         p1creating, p2creating = False, False
@@ -183,7 +191,7 @@ def init():
                     p2.stop()
                     if not p1.exploding:
                         countdownFinished = False
-                        restart(p1,p2)
+                        restart(p1, p2)
                         sb.addScore('p2')
                         counter = startingTimer
                         p1creating, p2creating = False, False
@@ -194,7 +202,7 @@ def init():
                     p1.stop()
                     if not p2.exploding:
                         countdownFinished = False
-                        restart(p1,p2)
+                        restart(p1, p2)
                         sb.addScore('p1')
                         counter = startingTimer
                         p1creating, p2creating = False, False
@@ -204,13 +212,33 @@ def init():
             if sb.p2score >= 5:
                 Gameover('player 2', gameover)
 
+            if p2.checkOutOfBounds():
+                if not p2.exploded:
+                    p2.explode()
+                p1.stop()
+                if not p2.exploding:
+                    countdownFinished = False
+                    restart(p1, p2)
+                    sb.addScore('p1')
+                    counter = startingTimer
+                    p1creating, p2creating = False, False
+            if p1.checkOutOfBounds():
+                if not p1.exploded:
+                    p1.explode()
+                p2.stop()
+                if not p1.exploding:
+                    countdownFinished = False
+                    restart(p1, p2)
+                    sb.addScore('p2')
+                    counter = startingTimer
+                    p1creating, p2creating = False, False
             if p1.rect.colliderect(p2.rect):
                 if not p1.exploded:
                     p1.explode()
                 if not p2.exploded:
                     p2.explode()
                 if not p2.exploding:
-                    restart(p1,p2)
+                    restart(p1, p2)
                     counter = startingTimer
                     countdownFinished = False
                     p1creating, p2creating = False, False

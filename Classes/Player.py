@@ -44,9 +44,9 @@ class Player(pygame.sprite.Sprite):
 
     def changeDifficulty(self, difficulty=0):
         if difficulty==0:
-            self.speed = 5
+            self.speed = 3
         else:
-            self.speed = 7
+            self.speed = 5
         Player.left = (-self.speed, 0)
         Player.right = (self.speed, 0)
         Player.up = (0, -self.speed)
@@ -141,5 +141,5 @@ class Player(pygame.sprite.Sprite):
 
     def checkOutOfBounds(self) -> bool:
         if Settings.GAME_DIFFICULTY == 2:
-            return self.rect.top < 0 or self.rect.left < 0 or self.rect.right > 800 or self.rect.bottom > 600
+            return self.rect.top < 0 or self.rect.left < 0 or self.rect.right > Settings.SCREEN_WIDTH or self.rect.bottom > Settings.SCREEN_HEIGHT
         return False
